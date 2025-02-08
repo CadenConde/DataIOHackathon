@@ -3,26 +3,17 @@ import matplotlib.pyplot as plt
 from scipy import stats
 import seaborn as sns
 
+plt.style.use('dark_background')
 # Load dataset
-df = pd.read_csv('data.csv')
+df = pd.read_csv('car_price_prediction.csv').head(1000)
 
 # Check basic info and summary
+print(df.head())
 df.info()
 df.describe()
 
 # Data visualization
-sns.histplot(df['Model'], kde=True)
-plt.xticks(rotation=45, fontsize=5)
+sns.pairplot(df)
+
+plt.subplots_adjust(bottom=0.1)
 plt.show()
-
-# Correlation heatmap
-correlation_matrix = df.corr()
-sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm')
-plt.show()
-
-# Grouping and aggregation
-# grouped_data = df.groupby('category_column')['numeric_column'].mean()
-
-# Statistical test
-t_stat, p_val = stats.ttest_ind(df['group1'], df['group2'])
-print(f"T-statistic: {t_stat}, P-value: {p_val}")
