@@ -443,8 +443,8 @@ class AiExplained(Scene):
             # Move dots and update values
             self.play(
                 FadeOut(dot1, dot2),
-                dot1.animate.move_to([4.75, 1, 0]),
-                dot2.animate.move_to([4.75, -1, 0]),
+                dot1.animate.move_to([5.25, 1, 0]),
+                dot2.animate.move_to([5.25, -1, 0]),
                 ReplacementTransform(mpg_value, new_mpg_value),
                 ReplacementTransform(co2_value, new_co2_value),
                 run_time=1.5
@@ -458,4 +458,75 @@ class AiExplained(Scene):
             self.play(FadeOut(dot1, dot2), run_time=1)
 
         self.wait(2)
+        
+        
+class Team(Scene):
+    def construct(self):
+        # Define the text to display
+        team_members = [
+            "Arjun Anand: Freshman CSE Major, Predictive Model Lead",
+            "Caden Conde: Freshman CIS Major, Visualization & Insight Lead",
+            "Ryan Lee: Freshman Logistics Major, Statistics & External Research Lead",
+            "Auritro Saha: Freshman CSE Major, Data Cleaning & Presentation Lead"
+        ]
 
+        # Create the initial text object
+        text = Text(team_members[0], font_size=30, color=RED)
+        self.play(Write(text), run_time=2)
+        self.wait(5)
+
+        # Replace the text for each team member
+        for member in team_members[1:]:
+            new_text = Text(member, font_size=30, color=RED)
+            self.play(ReplacementTransform(text, new_text), run_time=2)
+            text = new_text  # Update the reference to the current text
+            self.wait(5)
+
+        # Fade out everything at the end
+        self.play(FadeOut(text), run_time=2)
+
+
+class Tools(Scene):
+    def construct(self):
+        # Title: "Tools Used" in large red text
+        title = Text("Tools Used", font_size=60, color=RED).to_edge(UP)
+        self.play(Write(title), run_time=2)
+        self.wait(1)
+
+        # Define the categories and tools
+        categories = {
+            "Collab/Version Control": ["VSCode", "Git"],
+            "Statistical Analysis": ["Numpy", "Pandas"],
+            "Plotting/Visualization": ["PlotLy", "MatPlotLib", "Manim (Presentation)", "Folium (Maps)"],
+            "AI/ML Predictive Model": ["SciKitLearn"],
+            "Front End": ["React"]
+        }
+
+        # Display each category and its tools at the origin
+        for category, tools in categories.items():
+            # Create the category text
+            category_text = Text(category, font_size=40, color=WHITE).move_to(UP)
+            self.play(Write(category_text), run_time=1)
+            self.wait(0.5)
+
+            # Create the tools as bullet points
+            tool_texts = VGroup()  # Group to hold all tool texts
+            for tool in tools:
+                tool_text = Text(f"• {tool}", font_size=30, color=GREY)
+                tool_texts.add(tool_text)
+
+            # Arrange tools vertically below the category
+            tool_texts.arrange(DOWN, aligned_edge=LEFT, buff=0.2).next_to(category_text, DOWN, buff=0.5)
+
+            # Write the tools one by one
+            for tool_text in tool_texts:
+                self.play(FadeIn(tool_text, shift=RIGHT), run_time=0.5)
+
+            # Wait for a moment before fading out
+            self.wait(1)
+
+            # Fade out the category and tools
+            self.play(FadeOut(category_text), FadeOut(tool_texts), run_time=1)
+
+        # Fade out the title at the end
+        self.play(FadeOut(title), run_time=1)
