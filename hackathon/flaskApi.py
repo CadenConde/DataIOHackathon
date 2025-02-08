@@ -1,7 +1,9 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from main import setup
 
 app = Flask(__name__)
+CORS(app)
 
 testCO2, testMPG = None, None
 

@@ -20,7 +20,7 @@ df['Displacement per Cylinder'] = df['Engine Size(L)'] / df['Cylinders']
 
 df = df[['CO2 Emissions(g/km)', 'Fuel Consumption Comb (mpg)', 'Vehicle Class','Engine Size(L)','Cylinders','Transmission','Fuel Type','Displacement per Cylinder']]
 
-x = list(set(df["Vehicle Class"].values.tolist()))
+x = list(set(df["Transmission"].values.tolist()))
 for i in x:
     print(i)
 
