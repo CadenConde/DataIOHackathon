@@ -12,7 +12,7 @@ class scene(Scene):
 class Intro(Scene):
     def construct(self):
         # Colors
-        colors = [RED, BLUE, GREEN, YELLOW, ORANGE, PURPLE, PINK]
+        colors = [RED, GREY, WHITE]#, BLUE, GREEN, YELLOW, ORANGE, PURPLE, PINK]
         
         # Create random geometric shapes
         shapes = VGroup()
