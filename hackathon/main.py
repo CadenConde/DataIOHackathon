@@ -208,6 +208,6 @@ def setup():
         return model1.predict(pd.DataFrame([data+[data[1]/data[2]]], columns=x_columns))
 
     def test2(data):
-        return model1.predict(pd.DataFrame([data+[data[1]/data[2]]], columns=x_columns))
+        return model2.predict(pd.DataFrame([data+[data[1]/data[2]]], columns=x_columns))
 
     return (test1, test2)
