@@ -235,18 +235,26 @@ class MultiGraph(Scene):
 class ThreeDScatter(ThreeDScene):
     def construct(self):
         # Load dataset (first 50 rows)
-        df = pd.read_csv("datasets/japan_heart_attack_dataset.csv").head(100)
+        # df = pd.read_csv("datasets/japan_heart_attack_dataset.csv").head(100)
+        df = pd.read_csv("hackathon/data/CO2 Emissions_Canada.csv").head(25)
 
         # Extract relevant columns
-        ages = df["Age"].to_numpy()
-        stress_levels = df["Stress_Levels"].to_numpy()
-        cholesterol_levels = df["Cholesterol_Level"].to_numpy()
+        # ages = df["Age"].to_numpy()
+        # stress_levels = df["Stress_Levels"].to_numpy()
+        # cholesterol_levels = df["Cholesterol_Level"].to_numpy()
+        
+        ages = df["Cylinders"].to_numpy()
+        stress_levels = df["Fuel Consumption City (L/100 km)"].to_numpy()
+        cholesterol_levels = df["Fuel Consumption Hwy (L/100 km)"].to_numpy()
 
         # Create 3D Axes
         axes = ThreeDAxes(
-            x_range=[18, 80, 10],  # Age
-            y_range=[0, 10, 2],    # Stress Levels
-            z_range=[100, 250, 50],  # Cholesterol Level
+            # x_range=[18, 80, 10],  # Age
+            # y_range=[0, 10, 2],    # Stress Levels
+            # z_range=[100, 250, 50],  # Cholesterol Level
+            x_range=[2, 14, 2],  # Cyl
+            y_range=[2, 20, 2],    # City
+            z_range=[2, 20, 2],  # Hwy
             x_length=5,
             y_length=5,
             z_length=5,
@@ -256,9 +264,9 @@ class ThreeDScatter(ThreeDScene):
         self.camera.set_zoom(.8)  # Increase the zoom-out level
 
         # Axis labels
-        x_label = Text("Age").next_to(axes.x_axis, RIGHT)
-        y_label = Text("Stress Levels").next_to(axes.y_axis, UP)
-        z_label = Text("Cholesterol Level").next_to(axes.z_axis, OUT)
+        x_label = Text("Cylinders").next_to(axes.x_axis, RIGHT)
+        y_label = Text("Fuel Consumption City").next_to(axes.y_axis, UP)
+        z_label = Text("Fuel Consumption Hwy").next_to(axes.z_axis, OUT)
         
         x_label.rotate(90 * DEGREES, axis=RIGHT)
         y_label.rotate(90 * DEGREES, axis=RIGHT)
@@ -277,7 +285,7 @@ class ThreeDScatter(ThreeDScene):
         # Create scatter points
         points = VGroup()
         for age, stress, cholesterol in zip(ages, stress_levels, cholesterol_levels):
-            point = Dot3D(point=axes.c2p(age, stress, cholesterol), radius=0.06, color=BLUE)
+            point = Dot3D(point=axes.c2p(age, stress, cholesterol), radius=0.06, color=GREY)
             points.add(point)
 
         # Set initial opacity for staggered effect
@@ -305,7 +313,7 @@ class ThreeDScatter(ThreeDScene):
                 c + a * (18 + t * (80 - 18)) + b * (0 + t * (10 - 0))  # Predicted Cholesterol
             ),
             t_range=[0, 1],
-            color=GREEN
+            color=RED
         )
 
         
@@ -328,4 +336,4 @@ class ThreeDScatter(ThreeDScene):
         # Animate the best-fit line after the points
         self.play(Create(best_fit_line), run_time=2)
         
-        self.wait(18)
+        self.wait(5)
