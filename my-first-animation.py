@@ -348,3 +348,114 @@ class ThreeDScatter(ThreeDScene):
         self.play(Create(best_fit_line), run_time=2)
         
         self.wait(3)
+        
+        
+class AiExplained(Scene):
+    def construct(self):
+        # Load dataset and sample 50 rows for each plot
+        df = pd.read_csv("hackathon/data/CO2 Emissions_Canada.csv")
+        
+        # Define columns to plot against CO2 Emissions
+        columns = ["Vehicle Class", "Engine Size(L)", "Cylinders", "Transmission", "Fuel Type"]
+        y_positions = np.linspace(3, -3, 5)  # Spread vertically
+        left_x = -4  # Left side positioning
+        
+        # Load and display robot.svg in center
+        robot = SVGMobject("robot.svg").scale(0.8).move_to(ORIGIN)
+        self.play(FadeIn(robot))
+
+        scatter_plots = VGroup()
+        scatter_dots = VGroup()
+        
+        # Create labeled scatter plots
+        for i, col in enumerate(columns):
+            sampled_data = df.sample(20)  # Random 50 samples
+            
+            # Create axes for scatter plot
+            axes = Axes(
+                x_range=[0, 10, 5],  # Adjust for categorical scaling
+                y_range=[df["CO2 Emissions(g/km)"].min(), df["CO2 Emissions(g/km)"].max(), 150],
+                x_length=1.5,
+                y_length=1.5,
+                axis_config={"color": WHITE}
+            ).move_to([left_x, y_positions[i], 0])
+            
+            axes.x_axis.remove(axes.x_axis.tip)  # Remove the x-axis arrow
+            axes.y_axis.remove(axes.y_axis.tip)
+
+            # Add labels
+            x_label = Text("", font_size=18).next_to(axes.x_axis, RIGHT)
+            y_label = Text(col, font_size=18).next_to(axes.y_axis, LEFT)
+
+            dots = VGroup()
+            for _, row in sampled_data.iterrows():
+                # Normalize X values for categorical data
+                if df[col].dtype == object:  # Categorical data
+                    x_value = hash(row[col]) % 10  # Random mapping for categories
+                else:
+                    x_value = row[col]
+                
+                # Create a dot
+                dot = Dot(color=RED).move_to(axes.c2p(x_value, row["CO2 Emissions(g/km)"]))
+                dots.add(dot)
+
+
+            scatter_dots.add(dots)
+            scatter_plots.add(axes, x_label, y_label, dots)
+
+        # Add scatter plots to the scene
+        self.play(LaggedStart(*[FadeIn(plots) for plots in scatter_plots], lag_ratio=0.2), run_time=2)
+        self.wait(1)
+
+        # Move all dots to robot.svg location (assumed at origin)
+        self.play(*[d.animate.move_to(ORIGIN) for d in scatter_dots], run_time=2)
+
+        # Fade out all dots
+        self.play(FadeOut(scatter_dots), run_time=1)
+        self.wait(0.5)
+
+        # Persistent labels for MPG and CO2 values
+        mpg_text = Text("Miles Per Gallon:", font_size=30).move_to([3.75, 1, 0])
+        co2_text = Text("CO2 Emissions(g/km):", font_size=30).move_to([3.75, -1, 0])
+        self.play(Write(mpg_text), Write(co2_text))
+
+        # Create initial MPG and CO2 value text objects
+        mpg_value = Text("", font_size=30).next_to(mpg_text, RIGHT)
+        co2_value = Text("", font_size=30).next_to(co2_text, RIGHT)
+        mpg_value.move_to([3, 1, 0])
+        co2_value.move_to([3, 1, 0])
+        self.play(FadeIn(mpg_value), FadeIn(co2_value))
+
+        # Reintroduce dots moving to display MPG and CO2
+        for _ in range(5):
+            mpg = random.randint(20, 40)
+            co2 = random.randint(100, 300)
+
+            # Generate 2 dots
+            dot1 = Dot(color=RED).move_to(robot.get_center())
+            dot2 = Dot(color=RED).move_to(robot.get_center())
+            
+
+            # Create new text objects for the updated values
+            new_mpg_value = Text(str(mpg), font_size=30).next_to(mpg_text, RIGHT)
+            new_co2_value = Text(str(co2), font_size=30).next_to(co2_text, RIGHT)
+
+            # Move dots and update values
+            self.play(
+                FadeOut(dot1, dot2),
+                dot1.animate.move_to([4.75, 1, 0]),
+                dot2.animate.move_to([4.75, -1, 0]),
+                ReplacementTransform(mpg_value, new_mpg_value),
+                ReplacementTransform(co2_value, new_co2_value),
+                run_time=1.5
+            )
+
+            # Update the references to the current text objects
+            mpg_value = new_mpg_value
+            co2_value = new_co2_value
+
+            # Remove dots but keep labels
+            self.play(FadeOut(dot1, dot2), run_time=1)
+
+        self.wait(2)
+
