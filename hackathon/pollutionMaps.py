@@ -8,7 +8,7 @@ file_path = "hackathon/data/global air pollution dataset.csv"
 df = pd.read_csv(file_path)
 
 # Randomly select 50 cities
-df_sample = df.sample(n=250, random_state=42).copy()
+df_sample = df.sample(n=750, random_state=42).copy()
 
 # Initialize geocoder
 geolocator = Nominatim(user_agent="geoapi")
@@ -18,8 +18,7 @@ n = 1
 print("finding lat/long...")
 
 def get_lat_lon(city, country, n=n):
-    print(n)
-    n += 1
+    print(random.random())
     try:
         location = geolocator.geocode(f"{city}, {country}")
         if location:
