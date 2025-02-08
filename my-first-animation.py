@@ -40,20 +40,20 @@ class Intro(Scene):
         letters = Text("NORTON ANTIVIRUS", font_size=72, color=WHITE)
         
         # Load the SVG image
-        ohio_logo = SVGMobject("Ohio_State_Buckeyes_logo.svg")  # Make sure the path is correct
-        ohio_logo.scale(0.5)  # Adjust size as needed
-        
-        # Animate the transformation from shapes to the SVG
-        self.play(Transform(shapes, ohio_logo), run_time=3)
-        self.wait(2)
+        ohio_logo = SVGMobject("Ohio_State_Buckeyes_logo1.svg")  # Make sure the path is correct
+        ohio_logo.scale(3)  # Adjust size as needed
         
         # Animate the SVG logo into the letters
         letters = Text("NORTON ANTIVIRUS", font_size=72, color=WHITE)
         self.play(Transform(shapes, letters), run_time=3)
-        self.wait(5)
-        
-        self.play(FadeOut(shapes), run_time=2)
         self.wait(3)
+        
+        
+        # Animate the transformation from shapes to the SVG
+        self.play(Transform(shapes, ohio_logo), run_time=3)
+        self.wait(2)
+
+        self.play(FadeOut(shapes), run_time=1)
 
 class demo(Scene):
     def construct(self):
