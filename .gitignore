@@ -16,3 +16,5 @@ venv
 media/
 
 co2_emissions_map.html
+
+node_modules
