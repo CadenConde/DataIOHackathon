@@ -2,15 +2,15 @@ import React, { useState } from "react";
 import "./App.css";
 
 function App() {
-	const [setModelType, modelType] = useState("");
-	const [setVehicleType, vehicleType] = useState("");
+	const [ModelType, setModelType] = useState("");
+	const [VehicleType, setVehicleType] = useState("");
 
 	const handleDropdownModelType = event => {
 		setModelType(event.target.value);
 	};
 
 	const handleDropdownVehicleType = event => {
-		setModelType(event.target.value);
+		setVehicleType(event.target.value);
 	};
 	return (
 		<div className="App">
