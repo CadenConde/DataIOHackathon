@@ -8,3 +8,9 @@ wheels/
 
 # Virtual environments
 .venv
+
+# exclude mp4 files
+*.mp4
+
+# generated media
+media/
