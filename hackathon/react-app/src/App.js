@@ -2,26 +2,48 @@ import React, { useState } from "react";
 import "./App.css";
 
 function App() {
-	const [selectedOption, setSelectedOption] = useState("");
+	const [setModelType, modelType] = useState("");
+	const [setVehicleType, vehicleType] = useState("");
 
-	const handleDropdownChange = event => {
-		setSelectedOption(event.target.value);
+	const handleDropdownModelType = event => {
+		setModelType(event.target.value);
+	};
+
+	const handleDropdownVehicleType = event => {
+		setModelType(event.target.value);
 	};
 	return (
 		<div className="App">
 			<form>
 				{/* Dropdown menu */}
 				<label htmlFor="dropdown">Choose an option:</label>
-				<select id="dropdown" value={selectedOption} onChange={handleDropdownChange}>
+				<select id="dropdown" value={modelType} onChange={handleDropdownModelType}>
 					<option value="">--Select--</option>
-					<option value="option1">Option 1</option>
-					<option value="option2">Option 2</option>
-					<option value="option3">Option 3</option>
+					<option value="co2">Predict CO2 Emissions</option>
+					<option value="mpg">Predict MPG of Vehicle</option>
 				</select>
 
 				{/* Other input fields */}
 				<label htmlFor="input2">Input 2:</label>
-				<input type="text" id="input2" />
+				<select id="dropdown2" value={vehicleType} onChange={handleDropdownVehicleType}>
+					<option value="">--Select--</option>
+					<option value="PICKUP TRUCK - STANDARD">PICKUP TRUCK - STANDARD</option>
+					<option value="VAN - CARGO">VAN - CARGO</option>
+					<option value="MINIVAN">MINIVAN</option>
+					<option value="SPECIAL PURPOSE VEHICLE">SPECIAL PURPOSE VEHICLE</option>
+					<option value="STATION WAGON - SMALL">STATION WAGON - SMALL</option>
+					<option value="STATION WAGON - MID-SIZE">STATION WAGON - MID-SIZE</option>
+					<option value="SUV - SMALL">SUV - SMALL</option>
+					<option value="VAN - PASSENGER">VAN - PASSENGER</option>
+					<option value="MINICOMPACT">MINICOMPACT</option>
+					<option value="TWO-SEATER">TWO-SEATER</option>
+					<option value="SUBCOMPACT">SUBCOMPACT</option>
+					<option value="PICKUP TRUCK - SMALL">PICKUP TRUCK - SMALL</option>
+					<option value="SUV - STANDARD">SUV - STANDARD</option>
+					<option value="COMPACT">COMPACT</option>
+					<option value="MID-SIZE">MID-SIZE</option>
+					<option value="FULL-SIZE">FULL-SIZE</option>
+				</select>
 
 				<label htmlFor="input3">Input 3:</label>
 				<input type="text" id="input3" />
