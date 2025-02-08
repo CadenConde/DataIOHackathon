@@ -4,6 +4,7 @@ import json
 import branca.colormap as cm
 from gtts import gTTS
 import chardet
+from pathlib import Path
 
 # ---- Detect File Encoding ----
 file_path = "1. Cement_emissions.csv"  # Change this to your actual file path
@@ -26,7 +27,7 @@ df_melted = df.melt(id_vars=["Year"], var_name="Country", value_name="CO2_Emissi
 df_melted["CO2_Emissions"] = df_melted["CO2_Emissions"].fillna(0)
 
 # ---- Load GeoJSON for World Map ----
-geojson_path = "https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json"
+geojson_path = Path("./hackathon/data/Externaldata/countries.geo.json").resolve()
   # Change to your actual GeoJSON file path
 with open(geojson_path, "r") as f:
     world_geojson = json.load(f)
