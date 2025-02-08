@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import "./App.css";
 
 function App() {
-	const [ModelType, setModelType] = useState("");
-	const [VehicleType, setVehicleType] = useState("");
+	const [modelType, setModelType] = useState("");
+	const [vehicleType, setVehicleType] = useState("");
 
 	const handleDropdownModelType = event => {
 		setModelType(event.target.value);
