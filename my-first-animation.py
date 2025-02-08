@@ -1,12 +1,59 @@
 from manim import *
 import pandas as pd
 import numpy as np
+import random
 from sklearn.linear_model import LinearRegression
 
 class scene(Scene):
     def construct(self):
         demo.construct(self)
         MultiGraph.construct(self)
+        
+class Intro(Scene):
+    def construct(self):
+        # Colors
+        colors = [RED, BLUE, GREEN, YELLOW, ORANGE, PURPLE, PINK]
+        
+        # Create random geometric shapes
+        shapes = VGroup()
+        
+        positions = [
+            [-4, 2, 0], [-2, 2.75, 0], [0, 1.5, 0], [2, 2.5, 0], [5, 2, 0],
+            [-5, 0, 0], [-2.5, -0.5, 0], [0, -1, 0], [2.5, 1.5, 0], [4.5, 0, 0],
+            [-4.5, -2, 0], [-2, -1.5, 0], [0, -2, 0], [2, -3, 0], [4, -2, 0]
+        ]
+        
+        for pos in positions:
+            shape_type = random.choice([Square, Circle, Triangle])
+            shape = shape_type()
+            shape.set_fill(random.choice(colors), opacity=0.8)
+            shape.set_stroke(WHITE, width=2)
+            shape.scale(random.uniform(0.75, 1.5))
+            shape.move_to(pos)
+            shape.rotate(random.uniform(0, 360) * DEGREES)
+            shapes.add(shape)
+        
+        self.play(LaggedStart(*[FadeIn(s, scale=0.5) for s in shapes], lag_ratio=0.1), run_time=2)
+        self.wait(1)
+        
+        # Animate shapes into letters
+        letters = Text("NORTON ANTIVIRUS", font_size=72, color=WHITE)
+        
+        # Load the SVG image
+        ohio_logo = SVGMobject("Ohio_State_Buckeyes_logo.svg")  # Make sure the path is correct
+        ohio_logo.scale(0.5)  # Adjust size as needed
+        
+        # Animate the transformation from shapes to the SVG
+        self.play(Transform(shapes, ohio_logo), run_time=3)
+        self.wait(2)
+        
+        # Animate the SVG logo into the letters
+        letters = Text("NORTON ANTIVIRUS", font_size=72, color=WHITE)
+        self.play(Transform(shapes, letters), run_time=3)
+        self.wait(5)
+        
+        self.play(FadeOut(shapes), run_time=2)
+        self.wait(3)
 
 class demo(Scene):
     def construct(self):
