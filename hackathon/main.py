@@ -45,39 +45,67 @@ preprocessor = ColumnTransformer(
     ])
 
 # Split data into training and test sets
-# X_train, X_test, y_train, y_test = train_test_split(X, y1, test_size=0.2, random_state=42)
-X_train, X_test, y_train, y_test = train_test_split(X, y2, test_size=0.2, random_state=42)
+X_train1, X_test1, y_train1, y_test1 = train_test_split(X, y1, test_size=0.2, random_state=42)
+X_train2, X_test2, y_train2, y_test2 = train_test_split(X, y2, test_size=0.2, random_state=42)
 
 # Create a pipeline that first applies preprocessing, then fits a RandomForestRegressor model
-model = Pipeline(steps=[
+model1 = Pipeline(steps=[
+    ('preprocessor', preprocessor),
+    ('regressor', RandomForestRegressor(n_estimators=100, random_state=42))
+])
+model2 = Pipeline(steps=[
     ('preprocessor', preprocessor),
     ('regressor', RandomForestRegressor(n_estimators=100, random_state=42))
 ])
 
 # Train the model
-model.fit(X_train, y_train)
+model1.fit(X_train1, y_train1)
 
-y_pred = model.predict(X_test)
-df.loc[X_test.index, 'Predicted'] = y_pred
+y_pred1 = model1.predict(X_test1)
+df.loc[X_test1.index, 'Predicted'] = y_pred1
+df['Emissions_Type'] = np.where(df['Predicted'].notna(), 'Predicted', 'Actual')
+
+model2.fit(X_train2, y_train2)
+
+y_pred2 = model2.predict(X_test2)
+df.loc[X_test2.index, 'Predicted'] = y_pred2
 df['Emissions_Type'] = np.where(df['Predicted'].notna(), 'Predicted', 'Actual')
 
 # Calculate the mean squared error
-mse = mean_squared_error(y_test, y_pred)
-rmse = mse ** 0.5
+mse1 = mean_squared_error(y_test1, y_pred1)
+rmse1 = mse1 ** 0.5
 
-target_range = np.max(y_test) - np.min(y_pred)
-p = (1.0 - (rmse / target_range)) * 100
-print(f"Predicted Emissions: {y_pred}")
-print(f"Root Mean Squared Error: {p:.2f}%")
+target_range1 = np.max(y_test1) - np.min(y_pred1)
+p1 = (1.0 - (rmse1 / target_range1)) * 100
+
+mse2 = mean_squared_error(y_test1, y_pred1)
+rmse2 = mse2 ** 0.5
+
+target_range2 = np.max(y_test1) - np.min(y_pred1)
+p2 = (1.0 - (rmse2 / target_range2)) * 100
+
+print(f"Predicted Emissions: {y_pred1}")
+print(f"Root Mean Squared Error for Emissions: {p1:.2f}%")
+
+print(f"Predicted MPG: {y_pred2}")
+print(f"Root Mean Squared Error for MPG: {p2:.2f}%")
 
 
 print(df.head())
-def test(data):
-    return model.predict(pd.DataFrame([data], columns=x_columns))
+def test1(data):
+    return model1.predict(pd.DataFrame([data], columns=x_columns))
 
-print(test(["TWO-SEATER", 12.6, 12, "M7", "N", .5]))
+def test2(data):
+    return model2.predict(pd.DataFrame([data], columns=x_columns))
 
-pairplot = sns.pairplot(df, y_vars=["CO2 Emissions(g/km)"], x_vars=x_columns, hue='Emissions_Type', palette={'Actual': 'blue', 'Predicted': 'red'})
+testData=["TWO-SEATER", 6.6, 6, "M7", "N", .5]
+print(test1(testData))
+print(test2(testData))
+
+aa = 4
+plt.figure(figsize=(22*aa, 5*aa))
+pairplot = sns.pairplot(df, y_vars=y_column, x_vars=x_columns, hue='Emissions_Type', palette={'Actual': 'blue', 'Predicted': 'red'})
+plt.subplots_adjust(bottom=0.3)
 
 for ax in pairplot.axes.flatten():
     # Rotate x-axis labels
@@ -85,6 +113,7 @@ for ax in pairplot.axes.flatten():
         label.set_rotation(75)
         label.set_fontsize(6)
 
+plt.savefig('pairplot.png', format='png', dpi=300)
 plt.show()
 
 
