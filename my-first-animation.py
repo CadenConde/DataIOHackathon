@@ -236,7 +236,7 @@ class ThreeDScatter(ThreeDScene):
     def construct(self):
         # Load dataset (first 50 rows)
         # df = pd.read_csv("datasets/japan_heart_attack_dataset.csv").head(100)
-        df = pd.read_csv("hackathon/data/CO2 Emissions_Canada.csv").head(25)
+        df = pd.read_csv("hackathon/data/CO2 Emissions_Canada.csv").head(100)
 
         # Extract relevant columns
         # ages = df["Age"].to_numpy()
@@ -305,12 +305,23 @@ class ThreeDScatter(ThreeDScene):
         a, b = model.coef_
         c = model.intercept_
 
+        # # Define the 3D line of best fit as a parametric function
+        # best_fit_line = ParametricFunction(
+        #     lambda t: axes.c2p(
+        #         18 + t * (80 - 18),  # Age range
+        #         0 + t * (10 - 0),    # Stress range
+        #         c + a * (18 + t * (80 - 18)) + b * (0 + t * (10 - 0))  # Predicted Cholesterol
+        #     ),
+        #     t_range=[0, 1],
+        #     color=RED
+        # )
+        
         # Define the 3D line of best fit as a parametric function
         best_fit_line = ParametricFunction(
             lambda t: axes.c2p(
-                18 + t * (80 - 18),  # Age range
-                0 + t * (10 - 0),    # Stress range
-                c + a * (18 + t * (80 - 18)) + b * (0 + t * (10 - 0))  # Predicted Cholesterol
+                2 + t * (14 - 2),  # Cyl range
+                2 + t * (20 - 2),  # City range
+                c + a * (2 + t * (14 - 2)) + b * (2 + t * (20 - 2))  # Predicted Hwy
             ),
             t_range=[0, 1],
             color=RED
@@ -336,4 +347,4 @@ class ThreeDScatter(ThreeDScene):
         # Animate the best-fit line after the points
         self.play(Create(best_fit_line), run_time=2)
         
-        self.wait(5)
+        self.wait(3)
