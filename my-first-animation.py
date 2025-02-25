@@ -530,3 +530,88 @@ class Tools(Scene):
 
         # Fade out the title at the end
         self.play(FadeOut(title), run_time=1)
+        
+        
+class ModelAccuracy(Scene):
+    def construct(self):
+        # Title: "Random Force Regression Model Prediction Accuracy" in red
+        title = Text("Random Force Regression Model Prediction Accuracy", font_size=40, color=RED)
+        title.to_edge(UP)
+        self.play(Write(title), run_time=2)
+        self.wait(1)
+
+        # Subtitle: Split into two lines and centered
+        subtitle_line1 = Text("Given Vehicle Class, Transmission Type, # of Cylinders,", font_size=24, color=WHITE)
+        subtitle_line2 = Text("Engine Size, and Fuel Type, our model can predict:", font_size=24, color=WHITE)
+        subtitle_group = VGroup(subtitle_line1, subtitle_line2).arrange(DOWN, buff=0.2)
+        subtitle_group.next_to(title, DOWN, buff=0.5)
+        self.play(FadeIn(subtitle_line1, shift=UP), FadeIn(subtitle_line2, shift=UP), run_time=1.5)
+        self.wait(1)
+
+        # Bullet points
+        bullet1 = Text("• CO2 Emission with an accuracy of ", font_size=24, color=WHITE)
+        bullet2 = Text("• MPG with an accuracy of ", font_size=24, color=WHITE)
+
+        # Animated numbers
+        co2_accuracy = Text("95.9%", font_size=24, color=YELLOW)
+        co2_rqse = Text("15.195", font_size=24, color=YELLOW)
+        mpg_accuracy = Text("95.92%", font_size=24, color=YELLOW)
+        mpg_rsme = Text("2.16", font_size=24, color=YELLOW)
+
+        # Arrange bullet points and numbers
+        bullet_group = VGroup(bullet1, bullet2).arrange(DOWN, aligned_edge=LEFT, buff=0.5)
+        
+        bullet_group.shift(LEFT*2)  # Move bullet points slightly to the left
+
+        co2_accuracy.next_to(bullet1, RIGHT, buff=0.1)
+        co2_rqse_text = Text("and a RQSE of ", font_size=24, color=WHITE).next_to(co2_accuracy, RIGHT, buff=0.1)
+        co2_rqse.next_to(co2_rqse_text, RIGHT, buff=0.1)
+
+        mpg_accuracy.next_to(bullet2, RIGHT, buff=0.1)
+        mpg_rsme_text = Text("and a RSME of ", font_size=24, color=WHITE).next_to(mpg_accuracy, RIGHT, buff=0.1)
+        mpg_rsme.next_to(mpg_rsme_text, RIGHT, buff=0.1)
+
+        # Write bullet points
+        self.play(FadeIn(bullet1, shift=RIGHT), FadeIn(bullet2, shift=RIGHT), run_time=1.5)
+        self.wait(0.5)
+
+        # Animate numbers for CO2 Emission
+        self.play(
+            FadeIn(co2_accuracy, shift=UP),
+            FadeIn(co2_rqse_text, shift=UP),
+            FadeIn(co2_rqse, shift=UP),
+            run_time=1.5
+        )
+        self.play(
+            co2_accuracy.animate.set_color(RED).scale(1.2),
+            co2_rqse.animate.set_color(RED).scale(1.2),
+            run_time=1
+        )
+        self.play(
+            co2_accuracy.animate.set_color(YELLOW).scale(1 / 1.2),
+            co2_rqse.animate.set_color(YELLOW).scale(1 / 1.2),
+            run_time=1
+        )
+        self.wait(1)
+
+        # Animate numbers for MPG
+        self.play(
+            FadeIn(mpg_accuracy, shift=UP),
+            FadeIn(mpg_rsme_text, shift=UP),
+            FadeIn(mpg_rsme, shift=UP),
+            run_time=1.5
+        )
+        self.play(
+            mpg_accuracy.animate.set_color(RED).scale(1.2),
+            mpg_rsme.animate.set_color(RED).scale(1.2),
+            run_time=1
+        )
+        self.play(
+            mpg_accuracy.animate.set_color(YELLOW).scale(1 / 1.2),
+            mpg_rsme.animate.set_color(YELLOW).scale(1 / 1.2),
+            run_time=1
+        )
+        self.wait(1)
+
+        # Fade out everything at the end
+        self.play(*[FadeOut(mob) for mob in self.mobjects], run_time=2)

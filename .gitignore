@@ -15,6 +15,9 @@ venv
 # generated media
 media/
 
+#caden's stupid react app
+hackathon/react-app-2/
+
 co2_emissions_map.html
 
 node_modules
